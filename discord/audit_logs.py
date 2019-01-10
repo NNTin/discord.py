@@ -29,6 +29,7 @@ from .object import Object
 from .permissions import PermissionOverwrite, Permissions
 from .colour import Colour
 from .invite import Invite
+from .raw_data import RawData
 
 def _transform_verification_level(entry, data):
     return enums.try_enum(enums.VerificationLevel, data)
@@ -95,7 +96,7 @@ class AuditLogDiff:
     def __repr__(self):
         return '<AuditLogDiff attrs={0!r}>'.format(tuple(self.__dict__))
 
-class AuditLogChanges:
+class AuditLogChanges(RawData):
     TRANSFORMERS = {
         'verification_level':            (None, _transform_verification_level),
         'explicit_content_filter':       (None, _transform_explicit_content_filter),
@@ -119,6 +120,7 @@ class AuditLogChanges:
     }
 
     def __init__(self, entry, data):
+        self._data = data
         self.before = AuditLogDiff()
         self.after = AuditLogDiff()
 
@@ -183,7 +185,7 @@ class AuditLogChanges:
 
         setattr(second, 'roles', data)
 
-class AuditLogEntry:
+class AuditLogEntry(RawData):
     r"""Represents an Audit Log entry.
 
     You retrieve these via :meth:`Guild.audit_logs`.
@@ -210,6 +212,7 @@ class AuditLogEntry:
     """
 
     def __init__(self, *, users, data, guild):
+        self._data = data
         self._state = guild._state
         self.guild = guild
         self._users = users

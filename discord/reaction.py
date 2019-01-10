@@ -25,8 +25,9 @@ DEALINGS IN THE SOFTWARE.
 """
 
 from .iterators import ReactionIterator
+from .raw_data import RawData
 
-class Reaction:
+class Reaction(RawData):
     """Represents a reaction to a message.
 
     Depending on the way this object was created, some of the attributes can
@@ -63,9 +64,10 @@ class Reaction:
     message: :class:`Message`
         Message this reaction is for.
     """
-    __slots__ = ('message', 'count', 'emoji', 'me')
+    __slots__ = ('message', 'count', 'emoji', 'me', '_data')
 
     def __init__(self, *, message, data, emoji=None):
+        self._data = data
         self.message = message
         self.emoji = emoji or message._state.get_reaction_emoji(data['emoji'])
         self.count = data.get('count', 1)

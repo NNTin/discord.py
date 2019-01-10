@@ -28,6 +28,7 @@ from collections import namedtuple
 
 from . import utils
 from .mixins import Hashable
+from .raw_data import RawData
 
 class PartialEmoji(namedtuple('PartialEmoji', 'animated name id')):
     """Represents a "partial" emoji.
@@ -141,9 +142,10 @@ class Emoji(Hashable):
     guild_id: :class:`int`
         The guild ID the emoji belongs to.
     """
-    __slots__ = ('require_colons', 'animated', 'managed', 'id', 'name', '_roles', 'guild_id', '_state')
+    __slots__ = ('require_colons', 'animated', 'managed', 'id', 'name', '_roles', 'guild_id', '_state', '_data')
 
     def __init__(self, *, guild, state, data):
+        self._data = data
         self.guild_id = guild.id
         self._state = state
         self._from_data(data)

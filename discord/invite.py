@@ -79,9 +79,10 @@ class Invite(Hashable):
 
 
     __slots__ = ('max_age', 'code', 'guild', 'revoked', 'created_at', 'uses',
-                 'temporary', 'max_uses', 'inviter', 'channel', '_state')
+                 'temporary', 'max_uses', 'inviter', 'channel', '_state', '_data')
 
     def __init__(self, *, state, data):
+        self._data = data
         self._state = state
         self.max_age = data.get('max_age')
         self.code = data.get('code')

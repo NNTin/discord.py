@@ -24,7 +24,9 @@ FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
 DEALINGS IN THE SOFTWARE.
 """
 
-class EqualityComparable:
+from .raw_data import RawData
+
+class EqualityComparable(RawData):
     __slots__ = ()
 
     def __eq__(self, other):

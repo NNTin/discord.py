@@ -34,8 +34,9 @@ from .calls import CallMessage
 from .enums import MessageType, try_enum
 from .errors import InvalidArgument, ClientException, HTTPException
 from .embeds import Embed
+from .raw_data import RawData
 
-class Attachment:
+class Attachment(RawData):
     """Represents an attachment from Discord.
 
     Attributes
@@ -59,9 +60,10 @@ class Attachment:
         minutes or not valid at all.
     """
 
-    __slots__ = ('id', 'size', 'height', 'width', 'filename', 'url', 'proxy_url', '_http')
+    __slots__ = ('id', 'size', 'height', 'width', 'filename', 'url', 'proxy_url', '_http', '_data')
 
     def __init__(self, *, data, state):
+        self._data = data
         self.id = int(data['id'])
         self.size = data['size']
         self.height = data.get('height')
@@ -113,7 +115,7 @@ class Attachment:
                 fp.seek(0)
             return written
 
-class Message:
+class Message(RawData):
     r"""Represents a message from Discord.
 
     There should be no need to create one of these manually.
@@ -204,9 +206,10 @@ class Message:
                  '_cs_clean_content', '_cs_raw_channel_mentions', 'nonce', 'pinned',
                  'role_mentions', '_cs_raw_role_mentions', 'type', 'call',
                  '_cs_system_content', '_cs_guild', '_state', 'reactions',
-                 'application', 'activity')
+                 'application', 'activity', '_data')
 
     def __init__(self, *, state, channel, data):
+        self._data = data
         self._state = state
         self.id = int(data['id'])
         self.webhook_id = utils._get_as_snowflake(data, 'webhook_id')

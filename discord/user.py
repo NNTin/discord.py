@@ -31,6 +31,7 @@ from .utils import snowflake_time, _bytes_to_base64_data, parse_time, valid_icon
 from .enums import DefaultAvatar, RelationshipType, UserFlags, HypeSquadHouse
 from .errors import ClientException, InvalidArgument
 from .colour import Colour
+from .raw_data import RawData
 
 VALID_STATIC_FORMATS = {"jpeg", "jpg", "webp", "png"}
 VALID_AVATAR_FORMATS = VALID_STATIC_FORMATS | {"gif"}
@@ -75,10 +76,11 @@ class Profile(namedtuple('Profile', 'flags user mutual_guilds connected_accounts
 
 _BaseUser = discord.abc.User
 
-class BaseUser(_BaseUser):
-    __slots__ = ('name', 'id', 'discriminator', 'avatar', 'bot', '_state')
+class BaseUser(_BaseUser, RawData):
+    __slots__ = ('name', 'id', 'discriminator', 'avatar', 'bot', '_state', '_data')
 
     def __init__(self, *, state, data):
+        self._data = data
         self._state = state
         self.name = data['username']
         self.id = int(data['id'])

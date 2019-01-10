@@ -34,6 +34,7 @@ import aiohttp
 from . import utils
 from .errors import InvalidArgument, HTTPException, Forbidden, NotFound
 from .user import BaseUser, User
+from .raw_data import RawData
 
 __all__ = ['WebhookAdapter', 'AsyncWebhookAdapter', 'RequestsWebhookAdapter', 'Webhook']
 
@@ -280,7 +281,7 @@ class RequestsWebhookAdapter(WebhookAdapter):
         from .message import Message
         return Message(data=response, state=self, channel=self.webhook.channel)
 
-class Webhook:
+class Webhook(RawData):
     """Represents a Discord webhook.
 
     Webhooks are a form to send messages to channels in Discord without a
@@ -341,9 +342,10 @@ class Webhook:
     """
 
     __slots__ = ('id', 'guild_id', 'channel_id', 'user', 'name', 'avatar',
-                 'token', '_state', '_adapter')
+                 'token', '_state', '_adapter', '_data')
 
     def __init__(self, data, *, adapter, state=None):
+        self._data = data
         self.id = int(data['id'])
         self.channel_id = utils._get_as_snowflake(data, 'channel_id')
         self.guild_id = utils._get_as_snowflake(data, 'guild_id')

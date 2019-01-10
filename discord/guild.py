@@ -121,11 +121,12 @@ class Guild(Hashable):
     __slots__ = ('afk_timeout', 'afk_channel', '_members', '_channels', 'icon',
                  'name', 'id', 'unavailable', 'name', 'region', '_state',
                  '_default_role', '_roles', '_member_count', '_large',
-                 'owner_id', 'mfa_level', 'emojis', 'features',
+                 'owner_id', 'mfa_level', 'emojis', 'features', '_data',
                  'verification_level', 'explicit_content_filter', 'splash',
                  '_voice_states', '_system_channel_id', 'default_notifications')
 
     def __init__(self, *, data, state):
+        self._data = data
         self._channels = {}
         self._members = {}
         self._voice_states = {}

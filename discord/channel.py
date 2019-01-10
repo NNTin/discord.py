@@ -84,10 +84,11 @@ class TextChannel(discord.abc.Messageable, discord.abc.GuildChannel, Hashable):
         :attr:`~Permissions.manage_messages` bypass slowmode.
     """
 
-    __slots__ = ('name', 'id', 'guild', 'topic', '_state', 'nsfw',
+    __slots__ = ('name', 'id', 'guild', 'topic', '_state', 'nsfw', '_data',
                  'category_id', 'position', 'slowmode_delay', '_overwrites')
 
     def __init__(self, *, state, guild, data):
+        self._data = data
         self._state = state
         self.id = int(data['id'])
         self._update(guild, data)
@@ -424,10 +425,11 @@ class VoiceChannel(discord.abc.Connectable, discord.abc.GuildChannel, Hashable):
         The channel's limit for number of members that can be in a voice channel.
     """
 
-    __slots__ = ('name', 'id', 'guild', 'bitrate', 'user_limit',
+    __slots__ = ('name', 'id', 'guild', 'bitrate', 'user_limit', '_data',
                  '_state', 'position', '_overwrites', 'category_id')
 
     def __init__(self, *, state, guild, data):
+        self._data = data
         self._state = state
         self.id = int(data['id'])
         self._update(guild, data)
@@ -547,9 +549,10 @@ class CategoryChannel(discord.abc.GuildChannel, Hashable):
         top category is position 0.
     """
 
-    __slots__ = ('name', 'id', 'guild', 'nsfw', '_state', 'position', '_overwrites', 'category_id')
+    __slots__ = ('name', 'id', 'guild', 'nsfw', '_state', 'position', '_overwrites', 'category_id', '_data')
 
     def __init__(self, *, state, guild, data):
+        self._data = data
         self._state = state
         self.id = int(data['id'])
         self._update(guild, data)
@@ -655,9 +658,10 @@ class DMChannel(discord.abc.Messageable, Hashable):
         The direct message channel ID.
     """
 
-    __slots__ = ('id', 'recipient', 'me', '_state')
+    __slots__ = ('id', 'recipient', 'me', '_state', '_data')
 
     def __init__(self, *, me, state, data):
+        self._data = data
         self._state = state
         self.recipient = state.store_user(data['recipients'][0])
         self.me = me
@@ -743,9 +747,10 @@ class GroupChannel(discord.abc.Messageable, Hashable):
         The group channel's name if provided.
     """
 
-    __slots__ = ('id', 'recipients', 'owner', 'icon', 'name', 'me', '_state')
+    __slots__ = ('id', 'recipients', 'owner', 'icon', 'name', 'me', '_state', '_data')
 
     def __init__(self, *, me, state, data):
+        self._data = data
         self._state = state
         self.id = int(data['id'])
         self.me = me

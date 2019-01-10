@@ -35,8 +35,9 @@ from .permissions import Permissions
 from .enums import Status, try_enum
 from .colour import Colour
 from .object import Object
+from .raw_data import RawData
 
-class VoiceState:
+class VoiceState(RawData):
     """Represents a Discord user's voice state.
 
     Attributes
@@ -57,9 +58,10 @@ class VoiceState:
     """
 
     __slots__ = ('session_id', 'deaf', 'mute', 'self_mute',
-                 'self_deaf', 'afk', 'channel')
+                 'self_deaf', 'afk', 'channel', '_data')
 
     def __init__(self, *, data, channel=None):
+        self._data = data
         self.session_id = data.get('session_id')
         self._update(data, channel)
 
@@ -108,7 +110,7 @@ def flatten_user(cls):
 _BaseUser = discord.abc.User
 
 @flatten_user
-class Member(discord.abc.Messageable, _BaseUser):
+class Member(discord.abc.Messageable, _BaseUser, RawData):
     """Represents a Discord member to a :class:`Guild`.
 
     This implements a lot of the functionality of :class:`User`.
@@ -146,9 +148,10 @@ class Member(discord.abc.Messageable, _BaseUser):
         The guild specific nickname of the user.
     """
 
-    __slots__ = ('_roles', 'joined_at', '_client_status', 'activities', 'guild', 'nick', '_user', '_state')
+    __slots__ = ('_roles', 'joined_at', '_client_status', 'activities', 'guild', 'nick', '_user', '_state', '_data')
 
     def __init__(self, *, data, guild, state):
+        self._data = data
         self._state = state
         self._user = state.store_user(data['user'])
         self.guild = guild
