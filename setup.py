@@ -29,10 +29,6 @@ if version.endswith(('a', 'b', 'rc')):
     except Exception:
         pass
 
-readme = ''
-with open('README.rst') as f:
-    readme = f.read()
-
 extras_require = {
     'voice': ['PyNaCl==1.2.1'],
     'docs': [
@@ -49,7 +45,6 @@ setup(name='discord.py',
       packages=['discord', 'discord.ext.commands'],
       license='MIT',
       description='A python wrapper for the Discord API',
-      long_description=readme,
       include_package_data=True,
       install_requires=requirements,
       extras_require=extras_require,
