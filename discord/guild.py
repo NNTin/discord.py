@@ -126,7 +126,6 @@ class Guild(Hashable):
                  '_voice_states', '_system_channel_id', 'default_notifications')
 
     def __init__(self, *, data, state):
-        self._data = data
         self._channels = {}
         self._members = {}
         self._voice_states = {}
@@ -238,6 +237,7 @@ class Guild(Hashable):
 
         for obj in guild.get('voice_states', []):
             self._update_voice_state(obj, int(obj['channel_id']))
+        self._data = guild
 
     def _sync(self, data):
         try:
